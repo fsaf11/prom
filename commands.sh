@@ -1,4 +1,4 @@
-sudo su && cd /usr/local && sudo mkdir prometheus_components && cd /usr/local/prometheus_components && sudo mkdir python_scripts && cd /usr/local/prometheus_components/python_scripts && yum -y install python-pip && pip install --upgrade pip && pip2 install prometheus-client
-wget https://github.com/fsaf11/prom/blob/master/ibm_machine_monitor.py &
-#create machines.txt
-python2 ibm_machine_monitor.py &
+#Versão CentOS
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+cd /usr/local && sudo mkdir prometheus_components && cd prometheus_components && sudo mkdir python_scripts && cd python_scripts && sudo yum -y install python-pip && sudo pip install --upgrade pip && sudo pip2 install prometheus-client && sudo git clone https://github.com/fsaf11/prom.git && cd prom && sudo cp ibm_machine_monitor.py machines.txt ../ && cd .. && curl -u dino:prometheus -i -H "Content-Type: application/json" -d '{ "hostname": "'$HOSTNAME':8001","jobname": "ibm-monitoring" }' http://prometheus-server1.stilingue.com.br:5000/targets && sudo python2 ibm_machine_monitor.py &
+#--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
