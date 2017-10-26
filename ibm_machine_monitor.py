@@ -33,7 +33,7 @@ def get_metrics():
             statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 0 )
         
         # Setting traceroute metric:
-        command = 'result=`traceroute -n %s | tail -n 1 | grep %s | cut -d " " -f3` && if [ "$result" = "%s" ] ; then echo $result; echo 1 ; else echo $result; echo -1; fi' % (IP,IP,IP)
+        command = 'result=`traceroute -n %s | tail -n 1 | grep %s | cut -d " " -f4` && if [ "$result" = "%s" ] ; then echo $result; echo 1 ; else echo $result; echo -1; fi' % (IP,IP,IP)
         traceroute = subprocess.Popen( command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
         out = traceroute.communicate()[0]
         a, result, b = out.split( "\n" )
