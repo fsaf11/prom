@@ -25,13 +25,36 @@ def get_metrics():
         IP, HOSTNAME = MACHINE.split(" ")
         
         # Setting ping metric:
-        command = 'ping -c 5 %s | tail -n 2 | grep "0 received"' % IP
-        ping = subprocess.call(command, shell=True)
-        if ping == 1:
-            statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 1 )
+        #command = 'ping -c 5 %s | tail -n 2 | grep "0 received"' % IP
+        #ping = subprocess.call(command, shell=True)
+        #if ping == 1:
+        #    statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 1 )
+        #else:
+        #    statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 0 )
+        command = 'PING_OUTPUT=`ping -c 5 %s | tail -n 2 | head -n 1 | sed s/", "/";"/g | sed s/" packet loss;time "/""/g | sed s/"ms"/";"/g | cut -d ";" -f3-5` && echo $PING_OUTPUT' % IP
+        ping = subprocess.Popen( command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
+        out, err = ping.communicate()
+        out = out.replace("\n", "")
+        out = out.replace("%", ";")
+        if "errors" in out:
+            numerrors, perc, ms, discard = out.split(";")
+            perc = int(perc)
+            if perc == 100:
+                statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 0 )
+                #print "Unreachable! [%s percents packet loss, time = %sms]" % (perc, ms)
+            else:
+                statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 1 )
+                #print "OK! %s percents packet loss, time = %sms" % (perc, ms)
         else:
-            statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 0 )
-        
+            perc, ms, discard = out.split(";")
+            perc = int(perc)
+            if perc == 100:
+                statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 0 )
+                #print "Unreachable! [%s percents packet loss, time = %sms]" % (perc, ms)
+            else:
+                statusPingTo.labels( ip=IP, orig_hostname=LOC_HOSTNAME, dest_hostname=HOSTNAME ).set( 1 )
+                #print "OK! %s percents packet loss, time = %sms" % (perc, ms)
+                
         # Setting traceroute metric:
         command = 'result=`traceroute -n %s | tail -n 1 | grep %s | cut -d " " -f4` && if [ "$result" = "%s" ] ; then echo $result; echo 1 ; else echo $result; echo -1; fi' % (IP,IP,IP)
         traceroute = subprocess.Popen( command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE )
