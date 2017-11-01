@@ -12,8 +12,8 @@ import platform
 LOC_HOSTNAME = platform.node()
 
 # --- Metrics
-# Eliminado o label 'orig_hostname'! Já existe a 'instance'
-# Eliminados os labels 'pckt_loss_percent', 'time_ms' da métrica 'statusPingTo'! Agora têm suas próprias métricas.
+# Eliminado o label 'orig_hostname'! Ja existe a 'instance'
+# Eliminados os labels 'pckt_loss_percent', 'time_ms' da metrica 'statusPingTo'! Agora tem suas proprias metricas.
 #statusPingTo = Gauge('ibm_status_ping', 'Status host (by ping)!', [ 'ip', 'orig_hostname', 'pckt_loss_percent', 'time_ms' ])
 statusPingTo = Gauge('ibm_status_ping', 'Status host (by ping)!', [ 'ip', 'dest_hostname'])
 pingPcktLossPercent = Gauge('ibm_ping_pckt_loss_percent', 'Percent of packet loss (by ping)!', ['ip', 'dest_hostname'])
@@ -53,7 +53,7 @@ def get_metrics():
                 #print "Unreachable! [%s percents packet loss, time = %sms]" % (perc, ms)
             else:
                 #statusPingTo.labels( ip=IP dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 1 )
-                statusPingTo.labels( ip=IP dest_hostname=HOSTNAME ).set( 1 )
+                statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME ).set( 1 )
                 #print "OK! %s percents packet loss, time = %sms" % (perc, ms)
         else:
             PERC, MS, DISCARD = out.split(";")
