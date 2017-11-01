@@ -12,11 +12,13 @@ import platform
 LOC_HOSTNAME = platform.node()
 
 # --- Metrics
-# Eliminado o label 'dest_hostname'! Já existe a 'instance'
-statusPingTo = Gauge('ibm_status_ping', 'Status host (by ping)!', [ 'ip', 'orig_hostname', 'pckt_loss_percent', 'time_ms' ])
-pingPcktLossPercent = Gauge('ibm_ping_pckt_loss_percent', 'Percent of packet loss (by ping)!', ['ip', 'orig_hostname'])
-pingTimeMs = Gauge('ibm_ping_time_ms', 'Response time [ms] (by ping).', ['ip', 'orig_hostname'])
-statusTracerouteTo = Gauge( 'ibm_status_traceroute', 'Status host (by traceroute)!', [ 'ip', 'orig_hostname' ]) ;
+# Eliminado o label 'orig_hostname'! Já existe a 'instance'
+# Eliminados os labels 'pckt_loss_percent', 'time_ms' da métrica 'statusPingTo'! Agora têm suas próprias métricas.
+#statusPingTo = Gauge('ibm_status_ping', 'Status host (by ping)!', [ 'ip', 'orig_hostname', 'pckt_loss_percent', 'time_ms' ])
+statusPingTo = Gauge('ibm_status_ping', 'Status host (by ping)!', [ 'ip', 'dest_hostname'])
+pingPcktLossPercent = Gauge('ibm_ping_pckt_loss_percent', 'Percent of packet loss (by ping)!', ['ip', 'dest_hostname'])
+pingTimeMs = Gauge('ibm_ping_time_ms', 'Response time [ms] (by ping).', ['ip', 'dest_hostname'])
+statusTracerouteTo = Gauge( 'ibm_status_traceroute', 'Status host (by traceroute)!', [ 'ip', 'dest_hostname' ]) ;
 # --- Metrics
 
 PATH='./machines.txt'
@@ -46,19 +48,23 @@ def get_metrics():
             NUMERRORS, PERC, MS, DISCARD = out.split(";")
             PERC = int(PERC)           
             if PERC == 100:
-                statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 0 )
+                #statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 0 )
+                statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME ).set( 0 )
                 #print "Unreachable! [%s percents packet loss, time = %sms]" % (perc, ms)
             else:
-                statusPingTo.labels( ip=IP dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 1 )
+                #statusPingTo.labels( ip=IP dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 1 )
+                statusPingTo.labels( ip=IP dest_hostname=HOSTNAME ).set( 1 )
                 #print "OK! %s percents packet loss, time = %sms" % (perc, ms)
         else:
             PERC, MS, DISCARD = out.split(";")
             PERC = int(PERC)
             if PERC == 100:
-                statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 0 )
+                #statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 0 )
+                statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME ).set( 0 )
                 #print "Unreachable! [%s percents packet loss, time = %sms]" % (perc, ms)
             else:
-                statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 1 )
+                #statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME, pckt_loss_percent=PERC, time_ms=MS ).set( 1 )
+                statusPingTo.labels( ip=IP, dest_hostname=HOSTNAME ).set( 1 )
                 #print "OK! %s percents packet loss, time = %sms" % (perc, ms)
                 
         # Setting traceroute metric:
