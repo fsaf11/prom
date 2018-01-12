@@ -1,4 +1,3 @@
-
 169.60.133.194 mongo-server-ibm27.stilingue.com.br
 169.60.133.195 mongo-server-ibm28.stilingue.com.br
 169.60.133.196 mongo-server-ibm29.stilingue.com.br
