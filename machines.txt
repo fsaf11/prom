@@ -1,17 +1,4 @@
-169.60.131.153 mongo-server-ibm6.stilingue.com.br
-169.60.131.154 mongo-server-ibm7.stilingue.com.br
-169.60.131.155 mongo-server-ibm8.stilingue.com.br
-169.60.131.156 mongo-server-ibm9.stilingue.com.br
-169.60.131.157 mongo-server-ibm10.stilingue.com.br
-169.60.131.148 mongo-server-ibm11.stilingue.com.br
-169.60.133.192 mongo-server-ibm12.stilingue.com.br
-169.60.133.193 mongo-server-ibm13.stilingue.com.br
-169.60.133.194 mongo-server-ibm14.stilingue.com.br
-169.60.133.195 mongo-server-ibm15.stilingue.com.br
-169.60.133.196 mongo-server-ibm16.stilingue.com.br
-169.60.133.197 mongo-server-ibm17.stilingue.com.br
-169.60.133.198 mongo-server-ibm18.stilingue.com.br
-169.60.133.199 mongo-server-ibm19.stilingue.com.br
+
 169.60.133.194 mongo-server-ibm27.stilingue.com.br
 169.60.133.195 mongo-server-ibm28.stilingue.com.br
 169.60.133.196 mongo-server-ibm29.stilingue.com.br
