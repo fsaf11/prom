@@ -98,7 +98,7 @@ def main():
             get_metrics()
         else:
             print('Either file <machines.txt> is missing or is not readable!')
-        time.sleep(1)
+        time.sleep(3)
 
 if __name__ == '__main__':
     main()
