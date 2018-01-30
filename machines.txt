@@ -5,7 +5,7 @@
 169.60.133.192 mongo-server-ibm31.stilingue.com.br
 169.60.133.210 mongo-server-ibm32.stilingue.com.br
 169.60.133.209 mongo-server-ibm33.stilingue.com.br
-169.60.133.197 mongo-server-ibm34.stilingue.com.br
+169.60.133.208 mongo-server-ibm34.stilingue.com.br
 169.60.133.196 mongo-server-ibm35.stilingue.com.br
 169.60.133.195 mongo-server-ibm36.stilingue.com.br
 169.60.133.206 mongo-server-ibm37.stilingue.com.br
